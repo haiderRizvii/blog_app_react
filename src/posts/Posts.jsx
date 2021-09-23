@@ -23,7 +23,7 @@ const Posts = () => {
 
   return (
     <div className="App">
-      <h1 class="m-2">POSTS</h1>
+      <h1 class="m-5">Recently published</h1>
       <Link class="btn btn-warning" to="/create">Post your ideas</Link>
       {posts.map(post => (
         <Post title={post.title} body={post.body} id={post.id} user={post.user_id} time={post.created_at} length="100"/>
