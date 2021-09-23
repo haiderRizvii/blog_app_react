@@ -1,7 +1,8 @@
 const Bannar = () => {
 
   const imgStyle = {
-    height: "620px"
+    marginTop: "20px",
+    height: "420px"
   }
 
   return (
