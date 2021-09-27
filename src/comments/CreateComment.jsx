@@ -17,6 +17,7 @@ const CreateComment = (props) => {
     }).then(() => {
       props.parentCallback()
       history.push('/posts/' + props.id);
+      setComment('')
     })
   }
 

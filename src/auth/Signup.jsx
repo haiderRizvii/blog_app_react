@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
 
-
 const SignInForm = (props) => {
 
-  const [username, setUsername] = useState("")
+  const [useremail, setUseremail] = useState("")
     const [password, setPassword] = useState("")
 
     const handleUsernameChange = (evt) => {
-        setUsername(evt.target.value)
+        setUseremail(evt.target.value)
     }
 
     const handlePasswordChange = (evt) => {
@@ -16,14 +15,14 @@ const SignInForm = (props) => {
 
     const handleSubmit = (evt) => {
         evt.preventDefault()
-        fetch(`http://localhost:3000/users`, {
+        fetch(`http://localhost:3003/api/users/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "application/json"
             },
             body: JSON.stringify({
-                username,
+                useremail,
                 password
             })
         })
@@ -32,7 +31,7 @@ const SignInForm = (props) => {
             localStorage.setItem("token", data.jwt)
             props.handleLogin(data.user)
         })
-        setUsername("")
+        setUseremail("")
         setPassword("")
     }
   return (
@@ -55,7 +54,7 @@ const SignInForm = (props) => {
             <input type="password"
               className="form-control"
               placeholder="Enter password"
-              value={username}
+              value={useremail}
               onChange={handleUsernameChange}
             />
         </div>

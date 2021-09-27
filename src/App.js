@@ -17,62 +17,39 @@ import SignInForm from './auth/Signup';
 import LoginForm from './auth/Login';
 
 function App() {
+  //const [user, setUser] = useState({})
+  //const [form, setForm] = useState("")
   const [user, setUser] = useState({})
-  const [form, setForm] = useState("")
 
-  useEffect(() => {
-    const token = localStorage.getItem("token")
-    if(token){
-      fetch(`http://localhost:3000/auto_login`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      .then(resp => resp.json())
-      .then(data => {
-        setUser(data)
-        // console.log(data)
-      })
-    }
-  }, [])
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token")
+  //   if(token){
+  //     fetch(`http://localhost:3003/auto_login`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     })
+  //     .then(resp => resp.json())
+  //     .then(data => {
+  //       setUser(data)
+  //       // console.log(data)
+  //     })
+  //   }
+  // }, [])
 
   const handleLogin = (user) => {
     setUser(user)
   }
 
-  const handleFormSwitch = (input) => {
-    setForm(input)
-  }
-
-  const handleAuthClick = () => {
-    const token = localStorage.getItem("token")
-    fetch(`http://localhost:3000/user_is_authed`, {
-      headers: {
-        "Authorization": `Bearer ${token}`
-      }
-    })
-    .then(resp => resp.json())
-    .then(data => console.log(data))
-  }
-
   console.log(user)
-
-  const renderForm = () => {
-    switch(form){
-      case "login":
-        return <LoginForm handleLogin={handleLogin}/>
-        break;
-      default:
-        return <SignInForm handleLogin={handleLogin}/>
-    }
-  }
 
   return (
     <Router>
       <Navbar />
       <Switch>
         <Route path="/about" component={About} />
-        <Route path="/login" component={LoginForm} />
+        <Route path="/login" component={LoginForm} handleLogin={handleLogin}/>
         <Route path="/create" component={CreatePost} />
         <Route path="/posts/:id" component={BlogDetails} />
         <Route path="/register" component={SignInForm} />

@@ -1,8 +1,19 @@
+import { useState } from "react";
 import {
   Link
 } from "react-router-dom";
 
+
 const Navbar = () => {
+  const [call, setCall] = useState(false)
+
+  const callHandle = () => {
+    setCall(!call)
+  }
+
+  const navIn = () => {
+
+  }
   return (
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">

@@ -1,11 +1,11 @@
 import React, {useState} from 'react'
 
 const LoginForm = (props) => {
-  const [username, setUsername] = useState("")
+  const [useremail, setUseremail] = useState("")
   const [password, setPassword] = useState("")
 
   const handleUsernameChange = (evt) => {
-    setUsername(evt.target.value)
+    setUseremail(evt.target.value)
   }
 
   const handlePasswordChange = (evt) => {
@@ -14,14 +14,14 @@ const LoginForm = (props) => {
 
   const handleSubmit = (evt) => {
       evt.preventDefault()
-      fetch(`http://localhost:3000/login`, {
+      fetch(`http://localhost:3003/api/users/login`, {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
               "Accept": "application/json"
           },
           body: JSON.stringify({
-              username,
+              useremail,
               password
           })
       })
@@ -30,7 +30,7 @@ const LoginForm = (props) => {
           localStorage.setItem("token", data.jwt)
           props.handleLogin(data.user)
       })
-      setUsername("")
+      setUseremail("")
       setPassword("")
   }
 
@@ -38,14 +38,28 @@ const LoginForm = (props) => {
     <div class="container mt-5">
       <form onSubmit={handleSubmit}>
         <h3>Sign In</h3>
+
         <div className="form-group">
           <label>Email address</label>
-          <input className="form-control" value={username} onChange={handleUsernameChange} type="text" placeholder="username"/>
+          <input
+            className="form-control"
+            value={useremail}
+            onChange={handleUsernameChange}
+            type="text"
+            placeholder="username"
+          />
           </div>
+
         <div className="form-group">
           <label>Password</label>
-          <input type="password" onChange={handlePasswordChange} className="form-control" placeholder="Enter password" />
+          <input
+            type="password"
+            onChange={handlePasswordChange}
+            className="form-control"
+            placeholder="Enter password"
+          />
         </div>
+
         <div className="form-group">
           <div className="custom-control custom-checkbox">
             <input type="checkbox" className="custom-control-input" id="customCheck1" />
