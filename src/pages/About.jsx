@@ -1,3 +1,5 @@
+import PostViews from "../posts/PostViews";
+import Report from "../posts/Report";
 
 const About = () => {
   return (

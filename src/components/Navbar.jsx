@@ -1,19 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import {
-  Link
+  Link,
+  useHistory
 } from "react-router-dom";
+import { UserContext } from "../Contexts/UserContext";
 
 
 const Navbar = () => {
-  const [call, setCall] = useState(false)
+  const { user } = useContext(UserContext)
+  const history = useHistory();
+  const [value, setValue] = useState(false)
+  useEffect(() => {
+    setValue(localStorage.getItem('token'))
+}, [localStorage.getItem('token')])
 
-  const callHandle = () => {
-    setCall(!call)
+  const signOut = () => {
+    localStorage.clear()
+    setValue(false)
+    history.push('/');
   }
 
-  const navIn = () => {
-
-  }
+//  console.log("user:   "+user)
   return (
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container">
@@ -26,17 +33,32 @@ const Navbar = () => {
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
+                {localStorage.isAuthenticated? <Link class="navbar-brand brand-color text-success">Loged in as: {user.name}</Link>: <></>}
+              </li>
+              <li class="nav-item">
                 <Link class="nav-link active" aria-current="page" to="/">Home</Link>
               </li>
               <li class="nav-item">
                 <Link class="nav-link active" to="/about">About</Link>
               </li>
-              <li class="nav-item">
-                <Link class="nav-link active" to="/login">Login</Link>
-              </li>
-              <li class="nav-item">
-                <Link class="nav-link active" to="/register">Register</Link>
-              </li>
+              {!value?
+                <>
+                  <li class="nav-item">
+                    <Link class="nav-link active" to="/login">Login</Link>
+                  </li>
+                  <li class="nav-item">
+                    <Link class="nav-link active" to="/register">Register</Link>
+                  </li>
+                </>
+                :
+                <>
+                  <li class="nav-item">
+                    <Link class="nav-link active" to="/posts">Posts</Link>
+                  </li>
+                  <li><input type="button" value="Logout" class="bg-dark text-light mt-1" onClick={signOut} /></li>
+                </>
+
+              }
             </ul>
             <form class="d-flex">
               <input class="form-control me-2 ml-5" type="search" placeholder="Search" aria-label="Search"/>

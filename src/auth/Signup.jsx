@@ -1,9 +1,12 @@
 import React, {useState} from 'react';
+import {useHistory} from "react-router-dom";
 
 const SignInForm = (props) => {
-
-  const [useremail, setUseremail] = useState("")
-    const [password, setPassword] = useState("")
+  const history = useHistory();
+  const [name, setName] = useState("")
+  const [email, setUseremail] = useState("")
+  const [password, setPassword] = useState("")
+  //const [passwordCheck, setPasswordCheck] = useState("")
 
     const handleUsernameChange = (evt) => {
         setUseremail(evt.target.value)
@@ -13,26 +16,33 @@ const SignInForm = (props) => {
         setPassword(evt.target.value)
     }
 
+    const handleNameChange = (evt) => {
+        setName(evt.target.value)
+    }
+
     const handleSubmit = (evt) => {
-        evt.preventDefault()
-        fetch(`http://localhost:3003/api/users/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            },
-            body: JSON.stringify({
-                useremail,
-                password
-            })
-        })
-        .then(resp => resp.json())
-        .then(data => {
-            localStorage.setItem("token", data.jwt)
-            props.handleLogin(data.user)
-        })
-        setUseremail("")
-        setPassword("")
+      evt.preventDefault()
+      fetch(`http://localhost:3003/api/users/signup`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+          },
+          body: JSON.stringify({
+              name,
+              email,
+              password
+          })
+      })
+      .then(resp => resp.json())
+      .then(data => {
+          localStorage.setItem("token", data.jwt)
+          localStorage.setItem("isAuthenticated", true)
+          props.handleLogin(data.user)
+      })
+      setUseremail("")
+      setPassword("")
+      history.push('/');
     }
   return (
     <div class="container mt-5">
@@ -41,26 +51,26 @@ const SignInForm = (props) => {
 
         <div className="form-group">
             <label>Name</label>
-            <input type="text" className="form-control" placeholder="Name" />
-        </div>
-
-        <div className="form-group">
-            <label>Email address</label>
-            <input type="email" className="form-control" placeholder="Enter email" />
-        </div>
-
-        <div className="form-group">
-            <label>Password</label>
-            <input type="password"
+            <input type="text"
               className="form-control"
-              placeholder="Enter password"
-              value={useremail}
-              onChange={handleUsernameChange}
+              placeholder="Name"
+              value={name}
+              onChange={handleNameChange}
             />
         </div>
 
         <div className="form-group">
-            <label>Again Password</label>
+            <label>Email address</label>
+            <input type="email"
+            className="form-control"
+            placeholder="Enter email"
+            value={email}
+            onChange={handleUsernameChange}
+            />
+        </div>
+
+        <div className="form-group">
+            <label>Password</label>
             <input type="password"
                 className="form-control"
                 placeholder="Enter password"
@@ -68,6 +78,15 @@ const SignInForm = (props) => {
                 onChange={handlePasswordChange}
               />
         </div>
+
+        <div className="form-group">
+            <label>Again Password</label>
+            <input type="password"
+              className="form-control"
+              placeholder="Enter password"
+            />
+        </div>
+
 
         <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
         <p className="forgot-password text-right">

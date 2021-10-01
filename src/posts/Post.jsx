@@ -1,8 +1,10 @@
+
 import {
   Link
 } from "react-router-dom";
+import { UserContext } from "../Contexts/UserContext";
 
-const Post = (props) => {
+const Post = (props) =>{
   const MAX_LENGHT = props.length;
 
   return (
@@ -11,7 +13,7 @@ const Post = (props) => {
         <h1 class="text-center">{props.title}</h1>
       </div>
       <div class="card-body">
-        <h5 class="card-title text-center">By user: {props.id}, At: {props.time} </h5>
+        <h5 class="card-title text-center">By user: {props.user}, At: {props.time} </h5>
         <p class="card-text">{props.body.substring(0, MAX_LENGHT)}</p>
         {MAX_LENGHT && <Link to={`/posts/${props.id}`} class="btn btn-primary">Keep reading...</Link>}
       </div>

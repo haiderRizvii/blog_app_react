@@ -1,7 +1,9 @@
 import React, {useState} from 'react'
+import {useHistory} from "react-router-dom";
 
 const LoginForm = (props) => {
-  const [useremail, setUseremail] = useState("")
+  const history = useHistory();
+  const [email, setUseremail] = useState("")
   const [password, setPassword] = useState("")
 
   const handleUsernameChange = (evt) => {
@@ -13,25 +15,27 @@ const LoginForm = (props) => {
   }
 
   const handleSubmit = (evt) => {
-      evt.preventDefault()
-      fetch(`http://localhost:3003/api/users/login`, {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json"
-          },
-          body: JSON.stringify({
-              useremail,
-              password
-          })
-      })
-      .then(resp => resp.json())
-      .then(data => {
-          localStorage.setItem("token", data.jwt)
-          props.handleLogin(data.user)
-      })
-      setUseremail("")
-      setPassword("")
+    evt.preventDefault()
+    fetch(`http://localhost:3003/api/users/login`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        body: JSON.stringify({
+            email,
+            password
+        })
+    })
+    .then(resp => resp.json())
+    .then(data => {
+        localStorage.setItem("token", data.jwt)
+        localStorage.setItem("isAuthenticated", true)
+        props.handleLogin(data.user)
+    })
+    setUseremail("")
+    setPassword("")
+    history.push('/');
   }
 
   return (
@@ -43,12 +47,12 @@ const LoginForm = (props) => {
           <label>Email address</label>
           <input
             className="form-control"
-            value={useremail}
+            value={email}
             onChange={handleUsernameChange}
-            type="text"
-            placeholder="username"
+            type="email"
+            placeholder="email"
           />
-          </div>
+        </div>
 
         <div className="form-group">
           <label>Password</label>

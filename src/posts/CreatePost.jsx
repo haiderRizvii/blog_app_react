@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {
   Link
 } from "react-router-dom";
+import { UserContext } from "../Contexts/UserContext";
 
 const CreatePost = () => {
   //const notify = () => toast("Wow so easy!");
@@ -24,13 +25,22 @@ const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const history = useHistory();
+  const { user } = useContext(UserContext)
+  const user_id = user.id.toString()
+
+  console.log(user_id)
 
   const handleSubmit = (e) =>{
     e.preventDefault();
-    const post = {title, body};
+    const post = {title, body, user_id};
+    console.log(post)
     fetch('http://localhost:3003/api/v1/posts',{
       method: 'POST',
-      headers: {"content-Type": "application/json"},
+      headers: {
+        "content-Type": "application/json",
+        Authorization: localStorage.getItem("token")
+    },
+
       body: JSON.stringify(post)
     }).then(() => {
       history.push('/');
