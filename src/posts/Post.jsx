@@ -2,9 +2,8 @@
 import {
   Link
 } from "react-router-dom";
-import { UserContext } from "../Contexts/UserContext";
 
-const Post = (props) =>{
+const Post = (props) => {
   const MAX_LENGHT = props.length;
 
   return (
